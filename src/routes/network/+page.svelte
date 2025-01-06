@@ -43,7 +43,7 @@
 					</Card.Content>
 					<Card.Footer>
 						<Button variant="secondary" onclick={() => {
-							goto(`/devices/${ifaceName}`);
+							goto(`/devices#${ifaceName}`);
 						}}>Devices</Button>
 					</Card.Footer>
 				</Card.Root>
