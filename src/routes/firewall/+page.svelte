@@ -13,11 +13,11 @@
 	function zoneToFriendlyName(zone: string) {
 		switch (zone) {
 			case "lan":
-				return "Heimnetz";
+				return "Local";
 			case "wan":
 				return "Internet";
 			case "guest":
-				return "Gast";
+				return "Guest";
 			default:
 				return zone;
 		}
@@ -70,37 +70,43 @@
 	<Select.Root type="single" bind:value={fromZone}>
 		<Select.Trigger>{friendlyFromZone}</Select.Trigger>
 		<Select.Content>
-			<Select.Item value="lan">{zoneToFriendlyName("lan")}</Select.Item>
+			<!-- <Select.Item value="lan">{zoneToFriendlyName("lan")}</Select.Item>
 			<Select.Item value="wan">{zoneToFriendlyName("wan")}</Select.Item>
-			<Select.Item value="guest">{zoneToFriendlyName("guest")}</Select.Item>
+			<Select.Item value="guest">{zoneToFriendlyName("guest")}</Select.Item> -->
+			{#each getFirewall()?.zones ?? [] as zone}
+				<Select.Item value={zone.name}>{zoneToFriendlyName(zone.name)}</Select.Item>
+			{/each}
 			<!-- <Select.Item value="output">EasyGuard</Select.Item> -->
 		</Select.Content>
 	</Select.Root>
-	<span>zu</span>
+	<span>to</span>
 	<Select.Root type="single" bind:value={toZone}>
 		<Select.Trigger>{friendlyToZone}</Select.Trigger>
 		<Select.Content>
-			<Select.Item value="lan">{zoneToFriendlyName("lan")}</Select.Item>
+			<!-- <Select.Item value="lan">{zoneToFriendlyName("lan")}</Select.Item>
 			<Select.Item value="wan">{zoneToFriendlyName("wan")}</Select.Item>
-			<Select.Item value="guest">{zoneToFriendlyName("guest")}</Select.Item>
+			<Select.Item value="guest">{zoneToFriendlyName("guest")}</Select.Item> -->
+			{#each getFirewall()?.zones ?? [] as zone}
+				<Select.Item value={zone.name}>{zoneToFriendlyName(zone.name)}</Select.Item>
+			{/each}
 			<Select.Item value="easyguard">EasyGuard</Select.Item>
 		</Select.Content>
 	</Select.Root>
 </div>
 <div class="mt-2">
 	{#if fromZone == "" || toZone == ""}
-		<p>Bitte wählen Sie die Zonen aus, um die Regeln anzuzeigen.</p>
-		<p>Wichtige Routen:</p>
+		<p>Please select the zones to display the rules.</p>
+		<p>Important Routes:</p>
 		<Button onclick={() => {
 			fromZone = "lan";
 			toZone = "wan";
-		}} variant="secondary">Heimnetz nach Internet</Button>
+		}} variant="secondary">Local to Internet</Button>
 	{:else}
 		{#if getFirewall() == null}
 			<Skeleton class="w-full h-96" />
 		{:else}
 			{#if zoneData == null}
-				<span>Keine Daten.</span>
+				<span>No data.</span>
 			{:else}
 				<TableContextMenu zone={zoneData}>
 					<DataTable columns={getColumns(fromZone, toZone)} data={zoneData} {fromZone} {toZone} />

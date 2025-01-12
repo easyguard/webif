@@ -43,7 +43,7 @@
 			<Card.Root>
 				<Card.Header>
 					<Card.Title>Upstream</Card.Title>
-					<Card.Description>Die DNS-Server, die von deinem Router verwendet werden.</Card.Description>
+					<Card.Description>The DNS-Servers your Router uses.</Card.Description>
 				</Card.Header>
 				<Card.Content>
 					{#each dns.upstream.default as server, index}
@@ -57,8 +57,8 @@
 			</Card.Root>
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Sperrlisten</Card.Title>
-					<Card.Description>Liste von Adressen, welche gesperrt werden.</Card.Description>
+					<Card.Title>Blocklists</Card.Title>
+					<Card.Description>Lists of Adresses to get blocked.</Card.Description>
 				</Card.Header>
 				<Card.Content>
 					<div class="flex flex-col gap-2">
@@ -83,8 +83,8 @@
 			</Card.Root>
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Eigene Adressen</Card.Title>
-					<Card.Description>Adressen, die von deinem Router aufgelöst werden.</Card.Description>
+					<Card.Title>Custom Adresses</Card.Title>
+					<Card.Description>Adresses resolved by your Router.</Card.Description>
 				</Card.Header>
 				<Card.Content>
 					{#each Object.keys(dns.customDNS.mapping) as custom}

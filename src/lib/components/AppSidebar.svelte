@@ -23,17 +23,17 @@
 					icon: House,
 				},
 				{
-					title: "Module/Paketverwaltung",
+					title: "Modules/Packages",
 					url: "/modules",
 					icon: PackageIcon
 				},
 			]
 		},
 		{
-			title: "Netzwerk",
+			title: "Network",
 			items: [
 				{
-					title: "Netzwerke",
+					title: "Networks",
 					url: "/network",
 					icon: Globe,
 				},
@@ -43,7 +43,7 @@
 					icon: BrickWall,
 				},
 				{
-					title: "Sperren & DNS",
+					title: "Blocks & DNS",
 					url: "/dns",
 					icon: Ban,
 				},
