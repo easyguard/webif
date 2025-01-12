@@ -8,9 +8,9 @@ export function getColumns(fromZone: string, toZone: string): ColumnDef<Firewall
 	return [
 		{
 			id: "use",
-			header: "Verwendung",
+			header: "Usage",
 			cell: ({ row }) => {
-				return ports[row.original.port] || "";
+				return ports[row.original.protocol][row.original.port || row.original.type] || "";
 			}
 		},
 		{
