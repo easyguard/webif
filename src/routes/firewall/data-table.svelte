@@ -32,6 +32,10 @@
 		limit: "",
 		ip: null
 	});
+
+	let icmpTypes = [
+		"echo-request", "echo-reply", "destination-unreachable", "source-quench", "redirect", "time-exceeded", "parameter-problem", "timestamp-request", "timestamp-reply", "info-request", "info-reply", "address-mask-request", "address-mask-reply", "router-advertisement", "router-solicitation"
+	]
 </script>
 
 <div class="rounded-md border">
@@ -77,13 +81,25 @@
 				<Table.Cell></Table.Cell>
 				<Table.Cell>
 					<div class="flex items-center gap-2">
-						<Input placeholder="Port" type="number" bind:value={newRule.port} />
+						{#if newRule.protocol == "icmp"}
+							<Select.Root type="single" bind:value={newRule.type}>
+								<Select.Trigger>{newRule.type || "Type"}</Select.Trigger>
+								<Select.Content>
+									{#each icmpTypes as type}
+										<Select.Item value={type}>{type}</Select.Item>
+									{/each}
+								</Select.Content>
+							</Select.Root>
+						{:else}
+							<Input placeholder="Port" type="number" bind:value={newRule.port} />
+						{/if}
 						<span>/</span>
 						<Select.Root type="single" bind:value={newRule.protocol}>
 							<Select.Trigger>{newRule.protocol.toUpperCase() || "Protocol"}</Select.Trigger>
 							<Select.Content>
 								<Select.Item value="tcp">TCP</Select.Item>
 								<Select.Item value="udp">UDP</Select.Item>
+								<Select.Item value="icmp">ICMP</Select.Item>
 							</Select.Content>
 						</Select.Root>
 					</div>

@@ -52,6 +52,7 @@ export function addRule(fromZone: string, toZone: string, newRule: FirewallRule)
 	let chain = toZone;
 	let protocol = newRule.protocol;
 	let port = newRule.port;
+	let type = newRule.type;
 
 	if(fromZone == "easyguard") {
 		zone = toZone;
@@ -68,11 +69,11 @@ export function addRule(fromZone: string, toZone: string, newRule: FirewallRule)
 			"Authorization": token.token
 		},
 		body: JSON.stringify({
-		zone, chain, rule: {protocol, port}
+		zone, chain, rule: {protocol, port, type}
 		})
 	}).then(async res => {
 		openChanges.changes++;
-		openChanges.changesList.push(`Added rule from ${fromZone} to ${toZone} with protocol ${protocol} and port ${port}`);
+		openChanges.changesList.push(`Added rule from ${fromZone} to ${toZone} with protocol ${protocol} and port ${port || type}`);
 		await fetchFirewall();
 	})
 }
@@ -82,6 +83,7 @@ export function deleteRule(fromZone: string, toZone: string, rule: FirewallRule)
 	let chain = toZone;
 	let protocol = rule.protocol;
 	let port = rule.port;
+	let type = rule.type;
 
 	if(fromZone == "easyguard") {
 		zone = toZone;
@@ -98,11 +100,11 @@ export function deleteRule(fromZone: string, toZone: string, rule: FirewallRule)
 			"Authorization": token.token
 		},
 		body: JSON.stringify({
-		zone, chain, rule: {protocol, port}
+		zone, chain, rule: {protocol, port, type}
 		})
 	}).then(async res => {
 		openChanges.changes++;
-		openChanges.changesList.push(`Deleted rule from ${fromZone} to ${toZone} with protocol ${protocol} and port ${port}`);
+		openChanges.changesList.push(`Deleted rule from ${fromZone} to ${toZone} with protocol ${protocol} and port ${port || type}`);
 		await fetchFirewall();
 	})
 }

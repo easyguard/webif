@@ -25,9 +25,9 @@
 		<DropdownMenu.Item>Edit</DropdownMenu.Item>
 		<DropdownMenu.Item onclick={async () => {
 			await deleteRule(fromZone, toZone, {
-				port: parseInt(id.split("/")[0]),
+				port: id.split("/")[1] == "icmp" ? 0 : parseInt(id.split("/")[0]),
 				protocol: id.split("/")[1],
-				type: "",
+				type: id.split("/")[1] == "icmp" ? id.split("/")[0] : "",
 				limit: "",
 				ip: null
 			});
