@@ -39,13 +39,17 @@
 		<div class="grid gap-4">
 			<div class="grid gap-2">
 				<Label for="username">Username</Label>
-				<Input id="username" required bind:value={username} />
+				<Input id="username" required disabled={loggingIn} bind:value={username} />
 			</div>
 			<div class="grid gap-2">
 				<div class="flex items-center">
 					<Label for="password">Password</Label>
 				</div>
-				<Input id="password" type="password" required bind:value={password} />
+				<Input id="password" type="password" required disabled={loggingIn} bind:value={password} onkeypress={(e) => {
+					if(e.key === "Enter") {
+						login();
+					}
+				}} />
 			</div>
 			<Button type="submit" class="w-full" disabled={loggingIn} onclick={login}>
 				{#if loggingIn}
