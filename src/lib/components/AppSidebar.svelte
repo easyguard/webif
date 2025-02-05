@@ -51,6 +51,7 @@
 					title: "Tunnel",
 					url: "/tunnel",
 					icon: EarthLock,
+					disabled: true
 				},
 			]
 		},
@@ -60,7 +61,8 @@
 				{
 					title: "PXE (Netboot)",
 					url: "/netboot",
-					icon: MonitorPlay
+					icon: MonitorPlay,
+					disabled: true
 				},
 				{
 					title: "Diagnostic",
@@ -92,9 +94,9 @@
 							<Sidebar.MenuItem>
 								<Sidebar.MenuButton isActive={getCurrentPage() == item}>
 									{#snippet child({ props })}
-										<a href={item.url} {...props}>
-											<item.icon />
-											<span>{item.title}</span>
+										<a href={item.disabled ? "#" : item.url} {...props}>
+											<item.icon color={item.disabled ? "#acacac" : "#fff"} />
+											<span style={item.disabled ? "color: #acacac;" : ""}>{item.title}</span>
 										</a>
 									{/snippet}
 								</Sidebar.MenuButton>

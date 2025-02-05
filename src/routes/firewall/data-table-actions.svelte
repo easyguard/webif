@@ -2,7 +2,8 @@
 	import Ellipsis from "lucide-svelte/icons/ellipsis";
 	import { Button } from "$lib/components/ui/button/index.js";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-    import { deleteRule } from "$lib/api.svelte";
+	import { deleteRule } from "$lib/api.svelte";
+    import { deleteTemplateRule } from "$lib/TemplateManager.svelte";
 
 	let { id, fromZone, toZone }: { id: string, fromZone: string, toZone: string } = $props();
 </script>
@@ -24,13 +25,23 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Item>Edit</DropdownMenu.Item>
 		<DropdownMenu.Item onclick={async () => {
-			await deleteRule(fromZone, toZone, {
-				port: id.split("/")[1] == "icmp" ? 0 : parseInt(id.split("/")[0]),
-				protocol: id.split("/")[1],
-				type: id.split("/")[1] == "icmp" ? id.split("/")[0] : "",
-				limit: "",
-				ip: null
-			});
+			if(fromZone == "$$template$$") {
+				await deleteTemplateRule({
+					port: id.split("/")[1] == "icmp" ? 0 : parseInt(id.split("/")[0]),
+					protocol: id.split("/")[1],
+					type: id.split("/")[1] == "icmp" ? id.split("/")[0] : "",
+					limit: "",
+					ip: null
+				})
+			} else {
+				await deleteRule(fromZone, toZone, {
+					port: id.split("/")[1] == "icmp" ? 0 : parseInt(id.split("/")[0]),
+					protocol: id.split("/")[1],
+					type: id.split("/")[1] == "icmp" ? id.split("/")[0] : "",
+					limit: "",
+					ip: null
+				});
+			}
 		}}>Delete</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

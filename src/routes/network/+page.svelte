@@ -35,7 +35,7 @@
 						</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						{iface.mode} {iface.address} {iface.netmask}
+						{iface.mode == "dhcp" ? "DHCP" : "Static"}{iface.mode == "static" ? ": " + iface.address + "/" + iface.netmask : ""}
 						<br>
 						{iface.do_failover ? "With Failover" : "-"}
 						<br>

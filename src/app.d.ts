@@ -9,11 +9,16 @@ declare global {
 		// interface Platform {}
 	}
 
+	type FirewallChain = {
+		ports: FirewallRule[],
+		include: string[] | null,
+	}
+
 	type FirewallRule = {
 		protocol: string,
 		type: string,
 		port: number
-		limit: string,
+		limit: string?,
 		ip: string?
 	}
 }

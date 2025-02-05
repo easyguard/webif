@@ -6,12 +6,11 @@ import { API_ROOT } from "./routers.svelte";
 let firewall: null | {
 	zones: {
 		name: string,
-		input: { ports: FirewallRule[] },
-		output: { ports: FirewallRule[] },
-		forward: {
-			dest: string,
-			ports: FirewallRule[]
-		}[]
+		input: FirewallChain,
+		output: FirewallChain
+		forward: ({
+			dest: string
+		} & FirewallChain)[]
 	}[]
 } = $state(null);
 let dns: null | any = $state(null);
@@ -228,4 +227,84 @@ export function getDevices(iface: string) {
 	});
 
 	return events;
+}
+
+export function apk(command: string) {
+	return fetch(API_ROOT + "apk", {
+		method: "POST",
+		headers: {
+			"Content-Type": "text/plain",
+			"Authorization": token.token
+		},
+		body: command
+	}).then(response => response.text());
+}
+
+export function getWorld() {
+	return fetch(API_ROOT + "world", {
+		headers: {
+			"Authorization": token.token
+		}
+	}).then(response => response.text());
+}
+
+export function getTemplates() {
+	return fetch(API_ROOT + "firewall/templates", {
+		headers: {
+			"Authorization": token.token
+		}
+	}).then(response => response.json());
+}
+
+export function getTemplate(template: string) {
+	return fetch(API_ROOT + "firewall/template/" + template, {
+		headers: {
+			"Authorization": token.token
+		}
+	}).then(response => response.json());
+}
+
+export function patchTemplate(template: string, data: string) {
+	return fetch(API_ROOT + "firewall/template/" + template, {
+		method: "PATCH",
+		headers: {
+			"Authorization": token.token
+		},
+		body: data
+	}).then(response => response.json());
+}
+
+export function deleteTemplate(template: string) {
+	return fetch(API_ROOT + "firewall/template/" + template, {
+		method: "DELETE",
+		headers: {
+			"Authorization": token.token
+		}
+	}).then(response => response.json());
+}
+
+export function createTemplate(template: string) {
+	return fetch(API_ROOT + "firewall/template/" + template, {
+		method: "PUT",
+		headers: {
+			"Authorization": token.token
+		}
+	}).then(response => response.json());
+}
+
+export function patchIncludes(zone: string, chain: string, includes: string[]) {
+	return fetch(API_ROOT + "firewall/includes", {
+		method: "PATCH",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": token.token
+		},
+		body: JSON.stringify({
+			zone, chain, includes
+		})
+	}).then(async res => {
+		openChanges.changes++;
+		openChanges.changesList.push(`Updated includes for ${zone} ${chain}`);
+		await fetchFirewall();
+	});
 }

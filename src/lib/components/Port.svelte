@@ -3,7 +3,7 @@
 </script>
 
 <span class="port">
-	<span>{port || type}</span>
+	<span>{protocol == "icmp" ? type : port}</span>
 	<span style="color: #acacac; font-size: .9em;">/</span>
 	<span>{protocol.toUpperCase()}</span>
 </span>

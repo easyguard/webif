@@ -9,6 +9,7 @@
 	import Input from "$lib/components/ui/input/input.svelte";
 	import * as Select from "$lib/components/ui/select";
 	import { addRule } from "$lib/api.svelte";
+    import { addTemplateRule } from "$lib/TemplateManager.svelte";
  
 	type DataTableProps<TData, TValue> = {
 		columns: ColumnDef<TData, TValue>[];
@@ -29,7 +30,7 @@
 		port: 80,
 		protocol: "tcp",
 		type: "",
-		limit: "",
+		limit: null,
 		ip: null
 	});
 
@@ -107,7 +108,11 @@
 				<Table.Cell>
 					<Button onclick={async () => {
 						console.log(newRule);
-						await addRule(fromZone, toZone, newRule);
+						if(fromZone == "$$template$$") {
+							addTemplateRule(newRule);
+						} else {
+							await addRule(fromZone, toZone, newRule);
+						}
 					}}>Add</Button>
 				</Table.Cell>
 			</Table.Row>

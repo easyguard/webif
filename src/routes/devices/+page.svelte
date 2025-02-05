@@ -1,8 +1,11 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
 	import { page } from "$app/state";
 	import { getDevices } from "$lib/api.svelte";
 	import InspectorContextMenu from "$lib/components/InspectorContextMenu.svelte";
+    import Button from "$lib/components/ui/button/button.svelte";
 	import * as Card from "$lib/components/ui/card";
+    import Progressbar from "$lib/components/ui/Progressbar.svelte";
 	import { BookUserIcon, ComputerIcon, FactoryIcon, MapPinnedIcon, TagIcon } from "lucide-svelte";
 	import { onMount } from "svelte";
 
@@ -35,10 +38,15 @@
 </script>
 
 {#if loading}
-	<span>Loading...</span>
+	<Progressbar class="w-[calc(100%-24px)]" />
 {/if}
 
-<h1 class="text-2xl mb-2">Devices on {page.url.hash.replace("#", "")}</h1>
+<div class="mb-2 mt-2 flex items-center">
+	<h1 class="text-2xl">Devices on {page.url.hash.replace("#", "")}</h1>
+	<Button variant="outline" class="ml-auto" onclick={() => {
+		goto("/network");
+	}}>Back</Button>
+</div>
 <InspectorContextMenu data={devices} defaultFormat="json" title="Raw Devices">
 	<div id="devices" class="flex gap-2 flex-wrap">
 		{#each devices as device}

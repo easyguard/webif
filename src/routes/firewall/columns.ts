@@ -24,7 +24,7 @@ export function getColumns(fromZone: string, toZone: string): ColumnDef<Firewall
 		{
 			id: "actions",
 			cell: ({ row }) => {
-				return renderComponent(DataTableActions, { id: (row.original.port || row.original.type) + "/" + row.original.protocol, fromZone, toZone });
+				return renderComponent(DataTableActions, { id: (row.original.protocol == "icmp" ? row.original.type : row.original.port) + "/" + row.original.protocol, fromZone, toZone });
 			}
 		}
 	];

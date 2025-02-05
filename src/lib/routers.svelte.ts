@@ -2,11 +2,11 @@
 
 import { browser } from "$app/environment"
 
-export let API_ROOT = `http://${
+export let API_ROOT = `${browser ? location.protocol : "https"}//${
 	browser ?
 		location.hostname == "localhost" ? "10.10.99.1" : location.hostname
 		: "10.10.99.1"
-}:8080/api/`;
+}/api/`;
 
 let servers = $state([
 	{
@@ -31,5 +31,5 @@ export function saveServers() {
 }
 
 export function useServer(domain: string) {
-	API_ROOT = `http://${domain}:8080/api/`;
+	API_ROOT = `${browser ? location.protocol : "https"}://${domain}/api/`;
 }
