@@ -308,3 +308,32 @@ export function patchIncludes(zone: string, chain: string, includes: string[]) {
 		await fetchFirewall();
 	});
 }
+
+export type Alias = {
+	mac: string,
+	name: string
+}
+
+export async function getAliases() {
+	const raw = await fetch(API_ROOT + "aliases", {
+		headers: {
+			"Authorization": token.token
+		}
+	}).then(response => response.text());
+	return raw.trim().split("\n").map(line => {
+		const [mac, name] = line.split("\t");
+		return {mac, name};
+	});
+}
+
+export async function patchAliases(aliases: Alias[]) {
+	const data = aliases.map(alias => `${alias.mac}\t${alias.name}`).join("\n");
+	await fetch(API_ROOT + "aliases", {
+		method: "PATCH",
+		headers: {
+			"Content-Type": "text/plain",
+			"Authorization": token.token
+		},
+		body: data
+	})
+}
