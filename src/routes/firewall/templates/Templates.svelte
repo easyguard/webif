@@ -8,6 +8,7 @@
 	import * as AlertDialog from "$lib/components/ui/alert-dialog";
 	import * as Dialog from "$lib/components/ui/dialog";
 	import Input from "$lib/components/ui/input/input.svelte";
+	import { toast } from "svelte-sonner";
 
 	let selectedTemplate = $state("");
 
@@ -32,7 +33,20 @@
 				deleting = "";
 			}}>Cancel</AlertDialog.Cancel>
       <AlertDialog.Action onclick={async () => {
-				await deleteTemplate(deleting);
+				const result = await deleteTemplate(deleting);
+				if(result.error) {
+					if(result.error.startsWith("Template is in use")) {
+						// Template is in use by {}/input
+						// Template is in use by {}/forward/{}
+						let zone = result.error.split("Template is in use by ")[1].split("/")[0];
+						let dest = result.error.split("Template is in use by ")[1].split("/")[2] || "EasyGuard";
+						toast.error(`Template is in use by ${zone} to ${dest} zone`, { position: "top-center", duration: 5000 });
+					} else {
+						toast.error(result.error);
+					}
+				} else {
+					toast.success("Template deleted");
+				}
 				deleting = "";
 			}}>Continue</AlertDialog.Action>
     </AlertDialog.Footer>
