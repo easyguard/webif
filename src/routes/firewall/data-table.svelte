@@ -10,6 +10,7 @@
 	import * as Select from "$lib/components/ui/select";
 	import { addRule } from "$lib/api.svelte";
     import { addTemplateRule } from "$lib/TemplateManager.svelte";
+    import { toast } from "svelte-sonner";
  
 	type DataTableProps<TData, TValue> = {
 		columns: ColumnDef<TData, TValue>[];
@@ -108,6 +109,10 @@
 				<Table.Cell>
 					<Button onclick={async () => {
 						console.log(newRule);
+						if(newRule.protocol == "icmp" && (newRule.type == null || newRule.type == "")) {
+							toast.error("Please select a ICMP type.", { position: "top-center" });
+							return;
+						}
 						if(fromZone == "$$template$$") {
 							addTemplateRule(newRule);
 						} else {
