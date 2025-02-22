@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { token } from "$lib/api.svelte";
+	import { catchHandler, token } from "$lib/api.svelte";
 	import { Button } from "$lib/components/ui/button";
 	import * as Card from "$lib/components/ui/card";
 	import { Input } from "$lib/components/ui/input";
@@ -19,8 +19,8 @@
 			headers: {
 				"Authorization": `Basic ${newtoken}`
 			}
-		})
-		if(!res.ok) {
+		}).catch(catchHandler);
+		if(!res || !res.ok) {
 			loggingIn = false;
 			password = "";
 			return;
@@ -51,10 +51,7 @@
 					}
 				}} />
 			</div>
-			<Button type="submit" class="w-full" disabled={loggingIn} onclick={login}>
-				{#if loggingIn}
-					<LoaderCircle class="animate-spin" />
-				{/if}
+			<Button type="submit" class="w-full" onclick={login} loading={loggingIn}>
 				Login
 			</Button>
 		</div>

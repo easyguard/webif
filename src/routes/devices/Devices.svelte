@@ -6,7 +6,7 @@
 	import Button from "$lib/components/ui/button/button.svelte";
 	import * as Card from "$lib/components/ui/card";
 	import * as Dialog from "$lib/components/ui/dialog";
-    import { Input } from "$lib/components/ui/input";
+	import { Input } from "$lib/components/ui/input";
 	import Progressbar from "$lib/components/ui/Progressbar.svelte";
 	import * as Tooltip from "$lib/components/ui/tooltip";
 	import { BookUserIcon, ClipboardCopyIcon, ComputerIcon, FactoryIcon, MapPinnedIcon, TagIcon } from "lucide-svelte";
@@ -27,12 +27,13 @@
 	let newAlias = $state("");
 
 	onMount(async () => {
-		aliases = await getAliases();
+		console.log("Getting devices");
+		aliases = await getAliases() || [];
 		let events = getDevices(page.url.hash.replace("#", ""));
 		events.addEventListener("message", (e) => {
 			const json = JSON.parse(e.data);
 			console.log(json);
-			if(json.packet_count) {
+			if(json.packet_count != undefined) {
 				console.log("Closing event source");
 				events.close();
 				loading = false;
@@ -76,17 +77,17 @@
 </Dialog.Root>
 
 {#if loading}
-	<Progressbar class="w-[calc(100%-24px)]" />
+	<Progressbar class="w-[95%]" />
 {/if}
 
-<div class="mb-2 mt-2 flex items-center">
+<!-- <div class="mb-2 mt-2 flex items-center">
 	<h1 class="text-2xl">Devices on {page.url.hash.replace("#", "")}</h1>
 	<Button variant="outline" class="ml-auto" onclick={() => {
 		goto("/network");
 	}}>Back</Button>
-</div>
+</div> -->
 <InspectorContextMenu data={devices} defaultFormat="json" title="Raw Devices">
-	<div id="devices" class="flex gap-2 flex-wrap">
+	<div id="devices" class="flex gap-2 flex-wrap {loading ? "mt-4" : ""}">
 		{#each devices as device}
 			<Card.Root>
 				<Card.Header class="flex-row gap-2 items-center">

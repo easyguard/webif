@@ -3,6 +3,7 @@ import type { ColumnDef } from "@tanstack/table-core";
 import DataTableActions from "./data-table-actions.svelte";
 import ports from "$lib/ports";
 import Port from "$lib/components/Port.svelte";
+import PortUsage from "$lib/components/PortUsage.svelte";
 
 export function getColumns(fromZone: string, toZone: string): ColumnDef<FirewallRule>[] {
 	return [
@@ -10,7 +11,8 @@ export function getColumns(fromZone: string, toZone: string): ColumnDef<Firewall
 			id: "use",
 			header: "Usage",
 			cell: ({ row }) => {
-				return ports[row.original.protocol][row.original.port || row.original.type] || "";
+				// return ports[row.original.protocol][row.original.port || row.original.type] || "";
+				return renderComponent(PortUsage, { port: row.original.port, type: row.original.type, protocol: row.original.protocol });
 			}
 		},
 		{

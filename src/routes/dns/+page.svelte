@@ -32,11 +32,11 @@
 					<Button variant="secondary" onclick={() => {
 						fetchDNS();
 						changed = false;
-					}}>Verwerfen</Button>
+					}}>Discard</Button>
 					<Button onclick={() => {
 						patchDNS();
 						changed = false;
-					}}>Speichern</Button>
+					}}>Save</Button>
 				</Card.Content>
 			</Card.Root>
 			{/if}
